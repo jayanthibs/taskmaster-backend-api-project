@@ -27,27 +27,31 @@ router.post("/:projectId/tasks", async (req, res) => {
     });
     res.status(201).json(newTask);
   } catch (error) {
-    res.status(400).json({ message: errorMessage });
+    res.status(400).json({ message: error.message });
   }
 });
 
 //GET /api/projects/:projectId/tasks
 router.get("/:projectId/tasks", async (req, res) => {
   try {
+    console.log(req.user._id);
+    console.log(req.params.projectId);
     const tasks = await Task.find({
-      user: req.user._id,
+      //   user: req.user._id,
       project: req.params.projectId,
     });
     res.status(200).json(tasks);
   } catch (error) {
-    res.status(500).json({ message: errorMessage });
+    res.status(500).json({ message: error.message });
   }
 });
 
 //PUT /api/tasks/:taskId
 router.put("/:taskId", async (req, res) => {
   try {
-    const task = await Task.findOne(req.params.taskId);
+    const task = await Task.findOne({ _id: req.params.taskId }).populate(
+      "project",
+    );
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
@@ -66,15 +70,16 @@ router.put("/:taskId", async (req, res) => {
 
     res.status(201).json(updatedTask);
   } catch (error) {
-    res.status(500).json({ message: errorMessage });
+    res.status(500).json({ message: error.message });
   }
 });
-
 
 //DELETE /api/tasks/:taskId
 router.delete("/:taskId", async (req, res) => {
   try {
-    const task = await Task.findOne(req.params.taskId);
+    const task = await Task.findOne({ _id: req.params.taskId }).populate(
+      "project",
+    );
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
@@ -87,12 +92,10 @@ router.delete("/:taskId", async (req, res) => {
 
     const deletedTask = await Task.findByIdAndDelete(req.params.taskId);
 
-    res.status(201).json(deletedTask);
+    res.status(200).json(deletedTask);
   } catch (error) {
-    res.status(500).json({ message: errorMessage });
+    res.status(500).json({ message: error.message });
   }
 });
-
-
 
 export default router;

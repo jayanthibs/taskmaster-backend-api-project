@@ -10,8 +10,9 @@ const app = express();
 
 const port = process.env.PORT || 3001;
 
+app.use(express.json());
 
-app.use('/api/user', userRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes, taskRoutes);
 app.use('/api/tasks', taskRoutes);
 

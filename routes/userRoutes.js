@@ -1,24 +1,26 @@
 import express from "express";
 
-import User from "../models/User";
-import { signToken } from "../utils/auth";
+import User from "../models/User.js";
+import { signToken } from "../utils/auth.js";
 
 const router = express.Router();
 
 //POST /api/users/register
 router.post("/register", async (req, res) => {
   try {
-    const existingUser = await User.findOne(req.body.email);
-    if (existingUser) {
-      res
-        .status(400)
-        .json({ message: `User with this ${existingUser} already exists` });
-    }
+    console.log(req.body);
+    //  const { email } = req.body;
+    // const existingUser = await User.findOne({email});
+    // if (existingUser) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: `User with this ${existingUser} already exists` });
+    // }
     const newUser = await User.create(req.body);
     console.log(newUser);
     res.status(201).json(newUser);
   } catch (error) {
-    res.status(400).json({ message: errorMessage });
+    res.status(400).json({ message: error.message });
   }
 });
 
@@ -40,7 +42,7 @@ router.post("/login", async (req, res) => {
 
     res.status(200).json({ token, user });
   } catch (error) {
-    res.status(400).json({ message: errorMessage });
+    res.status(400).json({ message: error.message });
   }
 });
 

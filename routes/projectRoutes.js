@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
     });
     res.status(201).json(newProject);
   } catch (error) {
-    res.status(400).json({ message: errorMessage });
+    res.status(400).json({ message: error.message });
   }
 });
 
@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
     );
     res.status(200).json(projects);
   } catch (error) {
-    res.status(500).json({ message: errorMessage });
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -47,14 +47,14 @@ router.get("/:id", async (req, res) => {
     }
     res.status(200).json(project);
   } catch (error) {
-    res.status(400).json({ message: errorMessage });
+    res.status(400).json({ message: error.message });
   }
 });
 
 //PUT /api/projects/:id
 router.put("/:id", async (req, res) => {
   try {
-    const project = await Project.findOne(req.params.id);
+    const project = await Project.findOne({_id:req.params.id});
 
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
@@ -80,7 +80,7 @@ router.put("/:id", async (req, res) => {
 //DELETE /api/projects/:id
 router.delete("/:id", async (req, res) => {
   try {
-    const project = await Project.findOne(req.params.id);
+    const project = await Project.findOne({_id:req.params.id});
 
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
@@ -93,7 +93,7 @@ router.delete("/:id", async (req, res) => {
     }
 
     const deletedProject = await Project.findByIdAndDelete(req.params.id);
-    res.status(201).json(deletedProject);
+    res.status(200).json(deletedProject);
   } catch (error) {
     res.status(500).json(err);
   }
