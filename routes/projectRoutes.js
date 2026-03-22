@@ -1,6 +1,7 @@
 import express from "express";
 import Project from "../models/Project.js";
 import { authMiddleware } from "../utils/auth.js";
+import Task from '../models/Task.js'
 
 const router = express.Router();
 
@@ -43,7 +44,7 @@ router.get("/:id", async (req, res) => {
     if (!project) {
       return res
         .status(404)
-        .json({ message: `Project with ${req.params.id} iss not found` });
+        .json({ message: `Project with ${req.params.id} is not found` });
     }
     res.status(200).json(project);
   } catch (error) {
@@ -93,7 +94,8 @@ router.delete("/:id", async (req, res) => {
     }
 
     const deletedProject = await Project.findByIdAndDelete(req.params.id);
-    res.status(200).json(deletedProject);
+     const deletedTasks = await Task.deleteMany({ project: { $eq: req.params.id}});
+    res.status(200).json(deletedProject, deletedTasks);
   } catch (error) {
     res.status(500).json(err);
   }
