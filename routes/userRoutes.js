@@ -18,7 +18,8 @@ router.post("/register", async (req, res) => {
     // }
     const newUser = await User.create(req.body);
     console.log(newUser);
-    res.status(201).json(newUser);
+     const token = signToken(newUser);
+    res.status(201).json({token, newUser});
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
