@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-//POST /api/projects
+//POST /api/projects --- create a new project
 router.post("/", async (req, res) => {
   try {
     const newProject = await Project.create({
@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-//GET /api/projects
+//GET /api/projects  --- get all projects for the valid user
 
 router.get("/", async (req, res) => {
   try {
@@ -33,7 +33,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-//GET /api/projects/:id
+//GET /api/projects/:id  --- get a single project
 
 router.get("/:id", async (req, res) => {
   try {
@@ -52,7 +52,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//PUT /api/projects/:id
+//PUT /api/projects/:id  -- update a project
 router.put("/:id", async (req, res) => {
   try {
     const project = await Project.findOne({_id:req.params.id});
@@ -78,7 +78,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-//DELETE /api/projects/:id
+//DELETE /api/projects/:id  --- delete a project and it's tasks
 router.delete("/:id", async (req, res) => {
   try {
     const project = await Project.findOne({_id:req.params.id});
@@ -94,7 +94,7 @@ router.delete("/:id", async (req, res) => {
     }
 
     const deletedProject = await Project.findByIdAndDelete(req.params.id);
-     const deletedTasks = await Task.deleteMany({ project: { $eq: req.params.id}});
+    const deletedTasks = await Task.deleteMany({ project: req.params.id});
     res.status(200).json(deletedProject, deletedTasks);
   } catch (error) {
     res.status(500).json(err);

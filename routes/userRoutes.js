@@ -5,7 +5,7 @@ import { signToken } from "../utils/auth.js";
 
 const router = express.Router();
 
-//POST /api/users/register
+//POST /api/users/register  --- create a new user
 router.post("/register", async (req, res) => {
   try {
     console.log(req.body);
@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-//POST /api/users/login
+//POST /api/users/login  --- login with valid credentials
 
 router.post("/login", async (req, res) => {
   try {

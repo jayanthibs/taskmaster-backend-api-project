@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-//POST /api/projects/:projectId/tasks
+//POST /api/projects/:projectId/tasks   --- create a task
 router.post("/:projectId/tasks", async (req, res) => {
   try {
     const project = await Project.findOne({ _id: req.params.projectId });
@@ -31,22 +31,22 @@ router.post("/:projectId/tasks", async (req, res) => {
   }
 });
 
-//GET /api/projects/:projectId/tasks
+//GET /api/projects/:projectId/tasks  -- get all tasks
 router.get("/:projectId/tasks", async (req, res) => {
   try {
-    console.log(req.user._id);
-    console.log(req.params.projectId);
+    // console.log(req.user._id);
+    // console.log(req.params.projectId);
     const tasks = await Task.find({
       //   user: req.user._id,
       project: req.params.projectId,
-    });
+    }).populate("project");
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-//PUT /api/tasks/:taskId
+//PUT /api/tasks/:taskId  --- update a task
 router.put("/:taskId", async (req, res) => {
   try {
     const task = await Task.findOne({ _id: req.params.taskId }).populate(
@@ -74,7 +74,7 @@ router.put("/:taskId", async (req, res) => {
   }
 });
 
-//DELETE /api/tasks/:taskId
+//DELETE /api/tasks/:taskId   --- delete a task
 router.delete("/:taskId", async (req, res) => {
   try {
     const task = await Task.findOne({ _id: req.params.taskId }).populate(
