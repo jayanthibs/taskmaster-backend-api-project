@@ -1,4 +1,4 @@
-<h2 align="center"> Project Management API </h2>
+<h2 align="center"> TaskMaster Backend API </h2>
 
 ## Overview
 
@@ -36,7 +36,7 @@ project-root/
 │     └── taskRoutes.js
 │
 ├── utils/
-│   └── authMiddleware.js  # JWT authentication
+│   └── auth.js  # JWT authentication
 │
 ├── .env
 ├── .gitignore
@@ -213,6 +213,7 @@ Authorization: Bearer <token>
 
 ```
 git clone https://github.com/jayanthibs/taskmaster-backend-api-project.git
+
 cd taskmaster-backend-api-project
 ```
 
@@ -229,12 +230,3 @@ npm install
 npm run dev
 ```
 
----
-
-## Notes
-
-* Users can only access their own projects and tasks
-* Tasks are always tied to a project
-* Proper error handling should be implemented for production use
-
----
