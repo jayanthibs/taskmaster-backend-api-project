@@ -74,7 +74,7 @@ router.put("/:id", async (req, res) => {
     );
     res.status(201).json(updatedProject);
   } catch (error) {
-    res.status(500).json(err);
+    res.status(500).json(error);
   }
 });
 
@@ -97,7 +97,7 @@ router.delete("/:id", async (req, res) => {
     const deletedTasks = await Task.deleteMany({ project: req.params.id});
     res.status(200).json(deletedProject, deletedTasks);
   } catch (error) {
-    res.status(500).json(err);
+    res.status(500).json(error);
   }
 });
 
